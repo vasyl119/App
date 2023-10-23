@@ -1,0 +1,59 @@
+﻿@using App.Models;
+@using App.DB.Models;
+@model DatabaseViewModel<Measurement>
+
+
+<div class="d-flex flex-row justify-content-end mb-2">
+    <a asp-action="SortByDateDesc" class="btn btn-primary w-25 me-2">Sort by date desc</a>
+    <a asp-action="SortByDate" class="btn btn-primary w-25">Sort by date asc</a>
+</div>
+<table class="table table-striped table-bg-black-transparent table-bordered rounded">
+    <thead>
+        <tr>
+            <th>Measurement Name</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Surename</th>
+            <th>Subject</th>
+            <th>Subject Number</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach(var m in Model.Entities)
+        {
+            <tr>
+                <td data-bs-toggle="collapse" data-bs-target="#ID_@m.ID">@m.MeasureName</td>
+                <td data-bs-toggle="collapse" data-bs-target="#ID_@m.ID">@m.MeasureDate.ToString()</td>
+                <td data-bs-toggle="collapse" data-bs-target="#ID_@m.ID">@m.Name</td>
+                <td data-bs-toggle="collapse" data-bs-target="#ID_@m.ID">@m.Surename</td>
+                <td data-bs-toggle="collapse" data-bs-target="#ID_@m.ID">@m.Subject</td>
+                <td data-bs-toggle="collapse" data-bs-target="#ID_@m.ID">@m.SubjectNumber.ToString()</td>
+            </tr>
+
+            <!--Details panel-->
+            <tr class="m-0">
+                <td colspan="11" class="p-0">
+                    <div class="container-fluid row collapse py-1" id="ID_@m.ID" data-bs-parent=".table">
+                        <div class="col-4">
+                            <table class="table table-striped table-bg-black-transparent table-bordered rounded m-0">
+                                <tr>
+                                    <td>Value</td>
+                                    <td>Unit</td>
+                                </tr>
+                                @foreach(var mv in m.Values!)
+                                {
+                                    <tr>
+                                        <td>@mv.Value</td>
+                                        <td>@mv.Unit</td>
+                                    </tr>
+                                }
+                            </table>
+                            <a class="btn btn-primary mt-2" asp-action="Export" asp-route-id="@m.ID">Export to CSV</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

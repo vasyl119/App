@@ -1,0 +1,76 @@
+﻿@using App.DB.Models;
+@model Measurement
+
+<form asp-controller="Database" asp-action="Add" id="form">
+    <div>
+        <label asp-for="MeasureName" class="form-label"></label>
+        <input type="text" asp-for="MeasureName" class="form-control"/>
+    </div>
+    <div>
+        <label asp-for="MeasureDate" class="form-label"></label>
+        <input type="datetime-local" asp-for="MeasureDate" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="Name" class="form-label"></label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="Surename" class="form-label"></label>
+        <input type="text" asp-for="Surename" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="Subject" class="form-label"></label>
+        <input type="text" asp-for="Subject" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="SubjectNumber" class="form-label"></label>
+        <input type="number" min="1" asp-for="SubjectNumber" class="form-control" />
+    </div>
+
+    <input type="hidden" name="counter" value="1" />
+
+    <div id="MeasurementsValues" class="border border-1 mt-2 p-2">
+        <div class="row mt-1">
+            <div class="col-md-6">
+                <label class="form-label">Value</label>
+                <input type="number" min="1" value="0" class="form-control" name="Values[0].Value" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Unit</label>
+                <input type="text" min="1" class="form-control" name="Values[0].Unit" />
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <div class="btn btn-primary" onclick="btnClick()">
+            Add Measurement
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+        var counter =1;
+        function btnClick()
+        {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddMeasurementPartialView","Database")',
+                data: {model: counter++},
+                datatype: "html",
+                success: function(data)
+                {
+                    $("#MeasurementsValues").append(data);
+                },
+                error: function(xhr, status, error)
+                {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+    </script>
+}
